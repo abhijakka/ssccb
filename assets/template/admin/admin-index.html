@@ -1,0 +1,289 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   
+
+    <!-- Css -->
+    <link rel="stylesheet" href="{% static 'admin/dist/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/dist/all.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i,700,700i" rel="stylesheet">
+    <link href="{% static 'user/img/logo.png' %}" rel="icon">
+    <title>SHARE</title>
+</head>
+
+<body>
+<!--Container -->
+<div class="mx-auto bg-grey-lightest">
+    <!--Screen-->
+    <div class="min-h-screen flex flex-col">
+        <!--Header Section Starts Here-->
+        <header class="bg-nav">
+            <div class="flex justify-between">
+                <div class="p-1 mx-3 inline-flex items-center">
+                    <i class="fas fa-bars pr-2 text-white" onclick="sidebarToggle()"></i>
+                    <h1 class="text-white p-2">SHARE</h1>
+                </div>
+                <div class="p-1 flex flex-row items-center">
+                    <img onclick="profileToggle()" class="inline-block h-8 w-8 rounded-full" src="https://avatars0.githubusercontent.com/u/4323180?s=460&v=4" alt="">
+                    <a href="#" onclick="profileToggle()" class="text-white p-2 no-underline hidden md:block lg:block">Admin</a>
+                    <div id="ProfileDropDown" class="rounded hidden shadow-md bg-white absolute pin-t mt-12 mr-1 pin-r">
+                        <ul class="list-reset">
+                          
+                          <li><hr class="border-t mt-0 border-grey-light"></li>
+                          <li><a href="{% url 'session_del' %}" class="no-underline px-4 py-2 text-black hover:bg-grey-light">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!--/Header-->
+
+        <div class="flex flex-1">
+            <!--Sidebar-->
+            <aside id="sidebar" class="bg-side-nav w-1/2 md:w-1/6 lg:w-1/6 border-r border-side-nav hidden md:block lg:block">
+                <div class="flex">
+
+                </div>
+                <ul class="list-reset flex flex-col">
+                    <li class=" w-full h-full py-3 px-2 border-b border-light-border bg-white">
+                        <a href="{% url 'admin_index' %}"
+                           class="font-sans font-hairline hover:font-normal text-sm text-nav-item no-underline">
+                            <i class="fas fa-tachometer-alt float-left mx-2"></i>
+                            Dashboard
+                            <span><i class="fas fa-angle-right float-right"></i></span>
+                        </a>
+                    </li>
+                    <li class="w-full h-full py-3 px-2 border-b border-light-border">
+                        <a href="{% url 'admin_userrequest' %}"
+                           class="font-sans font-hairline hover:font-normal text-sm text-nav-item no-underline">
+                            <i class="fab fa-wpforms float-left mx-2"></i>
+                            User Requests
+                            <span><i class="fa fa-angle-right float-right"></i></span>
+                        </a>
+                    </li>
+                    <li class="w-full h-full py-3 px-2 border-b border-light-border ">
+                        <a href="{% url 'admin_cmastatus' %}"
+                           class="font-sans font-hairline hover:font-normal text-sm text-nav-item no-underline">
+                            <i class="fas fa-grip-horizontal float-left mx-2"></i>
+                            CMA Status
+                            <span><i class="fa fa-angle-right float-right"></i></span>
+                        </a>
+                    </li>
+                    <li class="w-full h-full py-3 px-2 border-b border-light-border ">
+                        <a href="{% url 'new_ipaddress' %}"
+                           class="font-sans font-hairline hover:font-normal text-sm text-nav-item no-underline">
+                            <i class="fas fa-grip-horizontal float-left mx-2"></i>
+                            IpAddress
+                            <span><i class="fa fa-angle-right float-right"></i></span>
+                        </a>
+                    </li>
+                   
+                    <li class="w-full h-full py-3 px-2 border-b border-light-border">
+                        <a href="{% url 'session_del' %}"
+                           class="font-sans font-hairline hover:font-normal text-sm text-nav-item no-underline">
+                           <i class="fas fa-sign-out-alt float-left mx-2"></i>
+                            LogOut
+                            <span><i class="fa fa-angle-right float-right"></i></span>
+                        </a>
+                    </li>
+                   
+                </ul>
+            </aside>
+            <!--/Sidebar-->
+            <!--Main-->
+            <main class="bg-white-300 flex-1 p-3 overflow-hidden">
+
+                <div class="flex flex-col">
+                    <!-- Stats Row Starts Here -->
+                    <div class="flex flex-1 flex-col md:flex-row lg:flex-row mx-2">
+                        <div class="shadow-lg bg-red-vibrant border-l-8 hover:bg-red-vibrant-dark border-red-vibrant-dark mb-2 p-2 md:w-1/4 mx-2">
+                            <div class="p-4 flex flex-col">
+                                <a href="#" class="no-underline text-white text-2xl">
+                                    {{pending}}
+                                </a>
+                                <a href="#" class="no-underline text-white text-lg">
+                                    Pending status
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="shadow bg-info border-l-8 hover:bg-info-dark border-info-dark mb-2 p-2 md:w-1/4 mx-2">
+                            <div class="p-4 flex flex-col">
+                                <a href="#" class="no-underline text-white text-2xl">
+                                   {{accepted}}
+                                </a>
+                                <a href="#" class="no-underline text-white text-lg">
+                                    Accepted Status
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="shadow bg-warning border-l-8 hover:bg-warning-dark border-warning-dark mb-2 p-2 md:w-1/4 mx-2">
+                            <div class="p-4 flex flex-col">
+                                <a href="#" class="no-underline text-white text-2xl">
+                                    {{rejected}}
+                                </a>
+                                <a href="#" class="no-underline text-white text-lg">
+                                    Rejected Status
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="shadow bg-success border-l-8 hover:bg-success-dark border-success-dark mb-2 p-2 md:w-1/4 mx-2">
+                            <div class="p-4 flex flex-col">
+                                <a href="#" class="no-underline text-white text-2xl">
+                                   {{total}}
+                                </a>
+                                <a href="#" class="no-underline text-white text-lg">
+                                    Total Users
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /Stats Row Ends Here -->
+
+                    <!-- Card Sextion Starts Here -->
+                    <div class="flex flex-1 flex-col md:flex-row lg:flex-row mx-2">
+
+                        <!-- card -->
+
+                        <div class="rounded overflow-hidden shadow bg-white mx-2 w-full">
+                            <div class="px-6 py-2 border-b border-light-grey">
+                                <div class="font-bold text-xl">User's Requests</div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table text-grey-darkest">
+                                    <thead class="bg-grey-dark text-white text-normal">
+                                    <tr>
+                                        <th scope="col">s.no</th>
+                                        <th scope="col">user Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Status</th>
+                                        
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in page_obj %}
+                                    <tr>
+                                        <th scope="row">{{i.user_id}}</th>
+                                        <td>{{i.name}}</td>
+                                        <td>{{i.email}}</td>
+                                        <td>{{i.status}}</td>
+                                        
+                                    </tr>
+                                   {% endfor %}
+                                    
+                                    
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /card -->
+
+                    </div>
+                    <!-- /Cards Section Ends Here -->
+                <center>
+                        {% if page_obj.has_previous %}
+                      <a href="?page={{ page_obj.previous_page_number }}">« Previous page</a>
+                    
+                      {% if page_obj.number > 3 %}
+                        <a href="?page=1">1</a>
+                        {% if page_obj.number > 4 %}
+                          <span>...</span>
+                        {% endif %}
+                      {% endif %}
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                      {% if page_obj.number == num %}
+                        <a href="?page={{ num }}">{{ num }}</a>
+                      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a href="?page={{ num }}">{{ num }}</a>
+                      {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                      {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+                        <span>...</span>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+                      {% elif page_obj.number < page_obj.paginator.num_pages|add:'-2' %}
+                        <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+                      {% endif %}
+                    
+                      <a href="?page={{ page_obj.next_page_number }}">Next Page »</a>
+                    {% endif %}
+                </center>
+                    <!-- Progress Bar -->
+                    
+                    <!--/Profile Tabs-->
+                </div>
+            </main>
+            <!--/Main-->
+        </div>
+
+
+
+        <!--Footer-->
+        <footer class="bg-grey-darkest text-white p-2">
+            <div class="flex flex-1 mx-auto">&copy; My Design</div>
+        </footer>
+        <!--/footer-->
+
+    </div>
+
+</div>
+
+<script src="{% static 'admin/main.js' %}"></script>
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+     {% if messages %}              
+     {% for message in messages %}
+     {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+         <script>swal({
+         title: "Success!",
+         text: "{{message}}",
+         icon: "success",
+         button: "OK",
+         });
+         </script>
+         
+         {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+             <script>swal({
+             title: "Warning :)",
+             text: "{{message}}",
+             icon: "warning",
+             button: "OK",
+             });
+         </script>
+         {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+         <script>swal({
+         title: "error :)",
+         text: "{{message}}",
+         icon: "error",
+         button: "OK",
+         });
+     </script>
+     {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+         <script>swal({
+         title: "error :)",
+         text: "{{message}}",
+         icon: "error",
+         button: "OK",
+         });
+     </script>
+         {% endif %}              
+     {% endfor %} 
+     {% endif %}
+   
+</body>
+
+</html>
